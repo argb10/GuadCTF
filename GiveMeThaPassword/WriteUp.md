@@ -3,13 +3,13 @@
 ## Recon
 At first we receive a link to the challenge. 
 
-Inspect it and we can a blank page. Umm smells like we are going to use burp.
+Inspect it and we receive a blank page. Umm smells like we are going to use burp.
 
-Use Burp proxy to inspect the GET requets.
+Use Burp proxy to inspect the GET request.
 
-When we try to make the GET we get (lol) a 400 Bad Requets.
+When we try to make the GET we receive a 400 Bad Request.
 
-Since we don't any more info, let's change to POST Request.
+Since we don't have any more info, let's change to POST Request.
 
 We do the POST and receive this:
 
