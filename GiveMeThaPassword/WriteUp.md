@@ -1,4 +1,4 @@
-# WriteUP for the "GiveMeThaPassword" Challenge
+# WriteUP for the "GiveMeThaPassword" Challenge  
 
 ## Recon
 At first we receive a link to the challenge. 
