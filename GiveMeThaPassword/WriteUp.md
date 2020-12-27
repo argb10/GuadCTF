@@ -37,9 +37,9 @@ Connection: close
 Looks like you forgot your password! Your password is: AAAAAAAA
 ```
 
-OK, now we know how the requets are working, let's check the code.
+OK, now we know how the request are working, let's check the code.
 
-We can summarize the code in this lines
+We can summarize the code in this lines:
 
 ```c
 void ctf(char *password, int print) {
@@ -95,24 +95,24 @@ As you can see in the code, I added 3 warnings, let's check it to see how we can
 ```
 This part makes the AND operation in the sixth bit so:
 
-If we have an 'a' and we want to change to 'A' we do this:
+If we have an 'a' and we want to change it to an 'A' we do this:
 
 ```
-a 		=	0110 0001
+a 	=	0110 0001
 ~0x20	=	1101 1111
     	 	---------
-A 		=	0100 0001    
+A 	=	0100 0001    
 ```
-This type of bit manipulation is also pretty dangerous, mostly because of we can send NULL 
-signals use a SPACE character:
+This type of bit manipulation is also pretty dangerous, mostly because we can send NULL 
+signals using a SPACE character:
 
 ```
-' '		=	0010 0000
+' '	=	0010 0000
 ~0x20	=	1101 1111
     	 	---------
 NULL	=	0000 0000    
 ```
-Note for the future: "Send whitespaces, maybe i'll find something"
+Note for the future: "Send whitespaces, maybe i'll find something" ( ͡° ͜ʖ ͡°)
 
 ## Warning 2
 ```c
@@ -122,10 +122,12 @@ while (*password) {
 		password++;
 	}
 ```
-This is another example of NOT to copy a variable, with this type of code I can write outside
+This is another example of how NOT to copy a variable in C. With this type of code I can write outside
 the buffer (buffer overflow) and access other parts of the memory or even manipulate
 the flow of the program; sending NULL signal for example, because the while will never
 be true.
+
+**This part allow us to not overwrite the last password typed, maybe from of another user.**
 
 ## Warning 3
 ```c
