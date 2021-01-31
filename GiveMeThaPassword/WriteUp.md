@@ -133,7 +133,7 @@ be true.
 ```c
 memset(buffer, ' ', 256);
 ```
-This function is being optimized by the compiler, and it's not running. ¯\_(ツ)_/¯
+This function is being optimized by the compiler, and it's not running. ¯\\_(ツ)_/¯
 
 
 ## Exploit
